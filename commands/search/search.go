@@ -15,6 +15,8 @@ import (
 	"github.com/spf13/cobra"
 	"strconv"
 	"encoding/json"
+	"fmt"
+	"strings"
 )
 
 const (
@@ -51,44 +53,107 @@ func search(cfg *config.Config, accessToken string, query *cmdTypes.SpotifySearc
 	loader.Stop()
 
 	if err != nil {
-		switch e := err.(type) {
-		case cmdTypes.SpotifyAPIError:
-			if e.Detail.Error.Message == "Player command failed: No active device found" {
-				player.Device(cfg)
-			}
-		default:
-			logrus.WithError(err).Error("Error searching tracks")
+		logrus.WithError(err).Error("Error searching tracks")
+		return
+	}
+
+	if query.Limit == "1" {
+		var result map[string]interface{}
+		err = json.Unmarshal(body, &result)
+		if err != nil {
+			logrus.WithError(err).Error("Error unmarshaling JSON response")
 			return
 		}
 
+		switch query.Type {
+		case "track":
+			tracks := result["tracks"].(map[string]interface{})
+			if tracks != nil {
+				items := tracks["items"].([]interface{})
+				if len(items) > 0 {
+					track := items[0]
+					if track != nil {
+						trackMap, ok := track.(map[string]interface{})
+						if ok {
+							trackUri, ok := trackMap["uri"].(string)
+							if ok {
+								player.AddToQueue(cfg, accessToken, trackUri)
+								player.Next(cfg, accessToken, false)
+							}
+						}
+					}
+				}
+			}
+		case "album":
+			albums := result["albums"].(map[string]interface{})
+			if albums != nil {
+				items := albums["items"].([]interface{})
+				if len(items) > 0 {
+					album := items[0]
+					if album != nil {
+						albumMap, ok := album.(map[string]interface{})
+						if ok {
+							albumUri, ok := albumMap["uri"].(string)
+							if ok {
+								tracks, err := getAlbumTracks(cfg, accessToken, albumUri)
+								if err != nil {
+									logrus.WithError(err).Error("Error getting album tracks")
+									return
+								}
+								if len(tracks) > 0 {
+									player.AddToQueue(cfg, accessToken, tracks[0])
+									player.Next(cfg, accessToken, false)
+								}
+							}
+						}
+					}
+				}
+			}
+		default:
+			logrus.Errorf("Unsupported type: %s", query.Type)
+		}
 	} else {
-		if query.Limit == "1" {
-			// If only one result is requested, play it directly
-			var result map[string]interface{}
-			err = json.Unmarshal(body, &result)
-			if err != nil {
-				logrus.WithError(err).Error("Error unmarshaling JSON response")
-				return
-			}
-			track := result["tracks"].(map[string]interface{})["items"].([]interface{})[0].(map[string]interface{})
-			trackUri := track["uri"].(string)
-			player.AddToQueue(cfg, accessToken, trackUri)
+		result := searchPrompt.SpotifySearchResultsPrompt(body)
+		if len(result.NextUrl) > 0 {
+			search(cfg, accessToken, nil, result.NextUrl)
+		}
+		if len(result.PlayUrl) > 0 {
+			player.AddToQueue(cfg, accessToken, result.PlayUrl)
 			player.Next(cfg, accessToken, false)
-		} else {
-			// Otherwise, prompt the user to select a result
-			result := searchPrompt.SpotifySearchResultsPrompt(body)
-			if len(result.NextUrl) > 0 {
-				search(cfg, accessToken, nil, result.NextUrl)
-			}
-			if len(result.PlayUrl) > 0 {
-				// instead of Calling Play function, we are adding song to the queue and using Next function
-				// otherwise song playing further nexts is not possible
-				// player.Play(accessToken, playUrl)
-				player.AddToQueue(cfg, accessToken, result.PlayUrl)
-				player.Next(cfg, accessToken, false)
+		}
+	}
+}
+
+func getAlbumTracks(cfg *config.Config, accessToken string, albumUri string) ([]string, error) {
+	params := &commands.PlayerParams{
+		AccessToken: accessToken,
+		Method:      "GET",
+		Endpoint:    fmt.Sprintf("/v1/albums/%s/tracks", strings.Split(albumUri, ":")[2]),
+	}
+
+	body, err := commands.Fetch(params)
+	if err != nil {
+		return nil, err
+	}
+
+	var result map[string]interface{}
+	err = json.Unmarshal(body, &result)
+	if err != nil {
+		return nil, err
+	}
+
+	tracks := result["items"].([]interface{})
+	trackUris := make([]string, len(tracks))
+	for i, track := range tracks {
+		trackMap, ok := track.(map[string]interface{})
+		if ok {
+			trackUri, ok := trackMap["uri"].(string)
+			if ok {
+				trackUris[i] = trackUri
 			}
 		}
 	}
+	return trackUris, nil
 }
 
 func SendSearchCommand(cfg *config.Config) *cobra.Command {
