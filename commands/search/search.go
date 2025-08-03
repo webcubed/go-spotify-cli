@@ -13,6 +13,7 @@ import (
 	"github.com/webcubed/go-spotify-cli/server"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
+	"strconv"
 )
 
 const (
@@ -75,19 +76,58 @@ func search(cfg *config.Config, accessToken string, query *cmdTypes.SpotifySearc
 }
 
 func SendSearchCommand(cfg *config.Config) *cobra.Command {
-	return &cobra.Command{
+	cmd := &cobra.Command{
 		Use:   "search",
 		Short: "Search spotify song",
 		Run: func(cmd *cobra.Command, args []string) {
 			loader.Stop()
 			token := server.ReadUserModifyTokenOrFetchFromServer(cfg)
-			err, query := searchPrompt.SpotifySearchQueryPrompt()
+			var query *cmdTypes.SpotifySearchQuery
+			var err error
+
+			// Check if query flag is provided
+			queryFlag, err := cmd.Flags().GetString("query")
 			if err != nil {
-				logrus.WithError(err).Error("Error getting Search Query Prompts")
+				logrus.WithError(err).Error("Error getting query flag")
 				return
+			}
+
+			typeFlag, err := cmd.Flags().GetString("type")
+			if err != nil {
+				logrus.WithError(err).Error("Error getting type flag")
+				return
+			}
+
+			limitFlag, err := cmd.Flags().GetInt("limit")
+			if err != nil {
+				logrus.WithError(err).Error("Error getting limit flag")
+				return
+			}
+
+			if queryFlag != "" {
+				// Create a new SpotifySearchQuery with the query flag
+				query = &cmdTypes.SpotifySearchQuery{
+					Query: queryFlag,
+					Type:  typeFlag,
+					Limit: strconv.Itoa(limitFlag),
+				}
+			} else {
+				// If query flag is not provided, prompt for search query
+				err, query = searchPrompt.SpotifySearchQueryPrompt()
+				if err != nil {
+					logrus.WithError(err).Error("Error getting Search Query Prompts")
+					return
+				}
 			}
 
 			search(cfg, token, query, "")
 		},
 	}
+
+	// Add query flag to the command
+	cmd.Flags().String("query", "", "Search query")
+	cmd.Flags().String("type", "track", "Type of search (e.g. track, episode, artist, album)")
+	cmd.Flags().Int("limit", 20, "Number of results to return")
+
+	return cmd
 }
