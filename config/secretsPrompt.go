@@ -7,7 +7,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/envoy49/go-spotify-cli/loader"
+	"github.com/webcubed/go-spotify-cli/loader"
 )
 
 func SecretsPrompt(cfg *Config) *Config {

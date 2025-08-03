@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"sync"
 
-	"github.com/envoy49/go-spotify-cli/commands/cmdTypes"
+	"github.com/webcubed/go-spotify-cli/commands/cmdTypes"
 	"github.com/sirupsen/logrus"
 )
 

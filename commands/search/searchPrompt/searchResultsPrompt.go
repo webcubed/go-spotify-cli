@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"log"
 
-	"github.com/envoy49/go-spotify-cli/commands/cmdTypes"
+	"github.com/webcubed/go-spotify-cli/commands/cmdTypes"
 )
 
 func SpotifySearchResultsPrompt(body []byte) *cmdTypes.SearchPromptResults {

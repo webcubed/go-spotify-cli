@@ -3,10 +3,10 @@ package player
 import (
 	"time"
 
-	"github.com/envoy49/go-spotify-cli/commands/cmdTypes"
-	"github.com/envoy49/go-spotify-cli/config"
+	"github.com/webcubed/go-spotify-cli/commands/cmdTypes"
+	"github.com/webcubed/go-spotify-cli/config"
 
-	"github.com/envoy49/go-spotify-cli/commands"
+	"github.com/webcubed/go-spotify-cli/commands"
 	"github.com/sirupsen/logrus"
 )
 

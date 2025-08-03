@@ -3,8 +3,8 @@ package handlers
 import (
 	"net/http"
 
-	"github.com/envoy49/go-spotify-cli/auth"
-	"github.com/envoy49/go-spotify-cli/config"
+	"github.com/webcubed/go-spotify-cli/auth"
+	"github.com/webcubed/go-spotify-cli/config"
 	"github.com/sirupsen/logrus"
 )
 

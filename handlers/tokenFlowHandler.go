@@ -1,9 +1,9 @@
 package handlers
 
 import (
-	"github.com/envoy49/go-spotify-cli/auth"
-	"github.com/envoy49/go-spotify-cli/commands/cmdTypes"
-	"github.com/envoy49/go-spotify-cli/config"
+	"github.com/webcubed/go-spotify-cli/auth"
+	"github.com/webcubed/go-spotify-cli/commands/cmdTypes"
+	"github.com/webcubed/go-spotify-cli/config"
 	"github.com/sirupsen/logrus"
 )
 

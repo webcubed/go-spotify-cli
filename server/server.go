@@ -5,9 +5,9 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/envoy49/go-spotify-cli/config"
+	"github.com/webcubed/go-spotify-cli/config"
 
-	"github.com/envoy49/go-spotify-cli/routes"
+	"github.com/webcubed/go-spotify-cli/routes"
 	"github.com/sirupsen/logrus"
 )
 

@@ -1,7 +1,7 @@
 package flush
 
 import (
-	"github.com/envoy49/go-spotify-cli/config"
+	"github.com/webcubed/go-spotify-cli/config"
 	"github.com/spf13/cobra"
 )
 

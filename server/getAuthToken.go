@@ -1,8 +1,8 @@
 package server
 
 import (
-	"github.com/envoy49/go-spotify-cli/auth"
-	"github.com/envoy49/go-spotify-cli/config"
+	"github.com/webcubed/go-spotify-cli/auth"
+	"github.com/webcubed/go-spotify-cli/config"
 )
 
 func ReadUserModifyTokenOrFetchFromServer(cfg *config.Config) string {

@@ -7,8 +7,8 @@
 </div>
 
 <div align="center">
-    <a href="https://www.buymeacoffee.com/envoy49">
-        <img src="https://img.buymeacoffee.com/button-api/?text=BuyMeACoffee&emoji=&slug=envoy49&button_colour=51e2f5&font_colour=000000&font_family=Cookie&outline_colour=000000&coffee_colour=FFDD00" alt="Buy Me A Coffee">
+    <a href="https://www.buymeacoffee.com/webcubed">
+        <img src="https://img.buymeacoffee.com/button-api/?text=BuyMeACoffee&emoji=&slug=webcubed&button_colour=51e2f5&font_colour=000000&font_family=Cookie&outline_colour=000000&coffee_colour=FFDD00" alt="Buy Me A Coffee">
     </a>
 </div>
 
@@ -20,7 +20,7 @@ Go Spotify CLI is a command-line interface tool built with GoLang (v1.21) that i
 
 For any questions, suggestions, or collaborations, feel free to reach out to me on Discord!
 
-- Discord: envoy49 💬
+- Discord: webcubed 💬
 
 ---
 
@@ -39,12 +39,12 @@ For any questions, suggestions, or collaborations, feel free to reach out to me 
 - Install Go version 1.21 or above https://go.dev/
 - To install latest version run the following command
 ```bash
-go install github.com/envoy49/go-spotify-cli@latest
+go install github.com/webcubed/go-spotify-cli@latest
 ```
-- To install a specific version of go-spotify-cli, first obtain the release number from the [Releases](https://github.com/Envoy49/go-spotify-cli/releases) page. Then, use the following command in the terminal, replacing <version> with the release number you obtained:
+- To install a specific version of go-spotify-cli, first obtain the release number from the [Releases](https://github.com/webcubed/go-spotify-cli/releases) page. Then, use the following command in the terminal, replacing <version> with the release number you obtained:
 
 ```bash
-go install github.com/envoy49/go-spotify-cli@<version>
+go install github.com/webcubed/go-spotify-cli@<version>
 ```
 
 After the installation is complete, open a new terminal and run `go-spotify-cli --version`.
@@ -56,7 +56,7 @@ Brew package manager is required to install Go Spotify CLI. More information on 
 Once brew is installed, below steps are required for installation.
 
 ```bash
-brew tap Envoy49/homebrew-go-spotify-cli
+brew tap webcubed/homebrew-go-spotify-cli
 ```
 ```
 brew install go-spotify-cli
@@ -111,7 +111,7 @@ winget search go-spotify-cli
 #### `Installation`
 
 ```powershell
-winget install Envoy49.go-spotify-cli
+winget install webcubed.go-spotify-cli
 ```
 
 After the installation is complete, open a new terminal and run `go-spotify-cli --version`.
@@ -119,13 +119,13 @@ After the installation is complete, open a new terminal and run `go-spotify-cli 
 #### `Update`
 
 ```powershell
-winget upgrade Envoy49.go-spotify-cli
+winget upgrade webcubed.go-spotify-cli
 ```
 
 #### `Uninstall`
 
 ```powershell
-winget uninstall Envoy49.go-spotify-cli
+winget uninstall webcubed.go-spotify-cli
 ```
 ---
 

@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"sync"
 
-	"github.com/envoy49/go-spotify-cli/config"
-	"github.com/envoy49/go-spotify-cli/handlers"
+	"github.com/webcubed/go-spotify-cli/config"
+	"github.com/webcubed/go-spotify-cli/handlers"
 )
 
 var once sync.Once

@@ -7,14 +7,14 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/envoy49/go-spotify-cli/commands/cmdTypes"
-	"github.com/envoy49/go-spotify-cli/commands/search/searchPrompt"
-	"github.com/envoy49/go-spotify-cli/config"
+	"github.com/webcubed/go-spotify-cli/commands/cmdTypes"
+	"github.com/webcubed/go-spotify-cli/commands/search/searchPrompt"
+	"github.com/webcubed/go-spotify-cli/config"
 	"golang.org/x/term"
 
-	"github.com/envoy49/go-spotify-cli/commands"
-	"github.com/envoy49/go-spotify-cli/loader"
-	"github.com/envoy49/go-spotify-cli/server"
+	"github.com/webcubed/go-spotify-cli/commands"
+	"github.com/webcubed/go-spotify-cli/loader"
+	"github.com/webcubed/go-spotify-cli/server"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )

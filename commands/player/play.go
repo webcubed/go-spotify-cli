@@ -4,10 +4,10 @@ import (
 	"bytes"
 	"encoding/json"
 
-	"github.com/envoy49/go-spotify-cli/commands"
-	"github.com/envoy49/go-spotify-cli/commands/cmdTypes"
-	"github.com/envoy49/go-spotify-cli/config"
-	"github.com/envoy49/go-spotify-cli/server"
+	"github.com/webcubed/go-spotify-cli/commands"
+	"github.com/webcubed/go-spotify-cli/commands/cmdTypes"
+	"github.com/webcubed/go-spotify-cli/config"
+	"github.com/webcubed/go-spotify-cli/server"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
