@@ -1,4 +1,4 @@
-module github.com/envoy49/go-spotify-cli
+module github.com/webcubed/go-spotify-cli
 
 go 1.21
 
