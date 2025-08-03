@@ -14,6 +14,7 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"strconv"
+	"encoding/json"
 )
 
 const (
@@ -61,16 +62,31 @@ func search(cfg *config.Config, accessToken string, query *cmdTypes.SpotifySearc
 		}
 
 	} else {
-		result := searchPrompt.SpotifySearchResultsPrompt(body)
-		if len(result.NextUrl) > 0 {
-			search(cfg, accessToken, nil, result.NextUrl)
-		}
-		if len(result.PlayUrl) > 0 {
-			// instead of Calling Play function, we are adding song to the queue and using Next function
-			// otherwise song playing further nexts is not possible
-			// player.Play(accessToken, playUrl)
-			player.AddToQueue(cfg, accessToken, result.PlayUrl)
+		if query.Limit == "1" {
+			// If only one result is requested, play it directly
+			var result map[string]interface{}
+			err = json.Unmarshal(body, &result)
+			if err != nil {
+				logrus.WithError(err).Error("Error unmarshaling JSON response")
+				return
+			}
+			track := result["tracks"].(map[string]interface{})["items"].([]interface{})[0].(map[string]interface{})
+			trackUri := track["uri"].(string)
+			player.AddToQueue(cfg, accessToken, trackUri)
 			player.Next(cfg, accessToken, false)
+		} else {
+			// Otherwise, prompt the user to select a result
+			result := searchPrompt.SpotifySearchResultsPrompt(body)
+			if len(result.NextUrl) > 0 {
+				search(cfg, accessToken, nil, result.NextUrl)
+			}
+			if len(result.PlayUrl) > 0 {
+				// instead of Calling Play function, we are adding song to the queue and using Next function
+				// otherwise song playing further nexts is not possible
+				// player.Play(accessToken, playUrl)
+				player.AddToQueue(cfg, accessToken, result.PlayUrl)
+				player.Next(cfg, accessToken, false)
+			}
 		}
 	}
 }
